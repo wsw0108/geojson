@@ -16,6 +16,14 @@ func NewLineString(line *geometry.Line) *LineString {
 	return &LineString{base: *line}
 }
 
+// NewLineStringZ ...
+func NewLineStringZ(line *geometry.Line, zarray []float64) *LineString {
+	return &LineString{
+		base:  *line,
+		extra: &extra{dims: 1, values: zarray},
+	}
+}
+
 // Empty ...
 func (g *LineString) Empty() bool {
 	return g.base.Empty()

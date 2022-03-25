@@ -18,6 +18,19 @@ func NewMultiLineString(lines []*geometry.Line) *MultiLineString {
 	return g
 }
 
+// NewMultiLineStringZ ...
+func NewMultiLineStringZ(lines []*geometry.Line, zarray []float64) *MultiLineString {
+	g := new(MultiLineString)
+	offset := 0
+	for _, line := range lines {
+		zvalues := zarray[offset : offset+line.NumPoints()]
+		offset += line.NumPoints()
+		g.children = append(g.children, NewLineStringZ(line, zvalues))
+	}
+	g.parseInitRectIndex(DefaultParseOptions)
+	return g
+}
+
 // AppendJSON ...
 func (g *MultiLineString) AppendJSON(dst []byte) []byte {
 	dst = append(dst, `{"type":"MultiLineString","coordinates":[`...)

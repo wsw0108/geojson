@@ -18,6 +18,16 @@ func NewMultiPoint(points []geometry.Point) *MultiPoint {
 	return g
 }
 
+// NewMultiPointZ ...
+func NewMultiPointZ(points []geometry.Point, zarray []float64) *MultiPoint {
+	g := new(MultiPoint)
+	for i, point := range points {
+		g.children = append(g.children, NewPointZ(point, zarray[i]))
+	}
+	g.parseInitRectIndex(DefaultParseOptions)
+	return g
+}
+
 // AppendJSON ...
 func (g *MultiPoint) AppendJSON(dst []byte) []byte {
 	dst = append(dst, `{"type":"MultiPoint","coordinates":[`...)

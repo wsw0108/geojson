@@ -16,6 +16,13 @@ func NewPolygon(poly *geometry.Poly) *Polygon {
 	return &Polygon{base: *poly}
 }
 
+func NewPolygonZ(poly *geometry.Poly, zarray []float64) *Polygon {
+	return &Polygon{
+		base:  *poly,
+		extra: &extra{dims: 1, values: zarray},
+	}
+}
+
 // Empty ...
 func (g *Polygon) Empty() bool {
 	return g.base.Empty()

@@ -18,6 +18,22 @@ func NewMultiPolygon(polys []*geometry.Poly) *MultiPolygon {
 	return g
 }
 
+// NewMultiPolygonZ ...
+func NewMultiPolygonZ(polys []*geometry.Poly, zarray []float64) *MultiPolygon {
+	g := new(MultiPolygon)
+	offset := 0
+	for _, poly := range polys {
+		numPoints := poly.Exterior.NumPoints()
+		for _, hole := range poly.Holes {
+			numPoints += hole.NumPoints()
+		}
+		zvalues := zarray[offset : offset+numPoints]
+		g.children = append(g.children, NewPolygonZ(poly, zvalues))
+	}
+	g.parseInitRectIndex(DefaultParseOptions)
+	return g
+}
+
 // AppendJSON ...
 func (g *MultiPolygon) AppendJSON(dst []byte) []byte {
 	dst = append(dst, `{"type":"MultiPolygon","coordinates":[`...)
